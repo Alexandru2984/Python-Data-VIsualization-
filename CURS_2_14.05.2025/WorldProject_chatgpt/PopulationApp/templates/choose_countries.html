@@ -1,0 +1,19 @@
+<h2>Selectează țările și tipul de date pentru grafic</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Tip de date:</label><br>
+    <input type="radio" name="measure" value="populatii" {% if measure == "populatii" %}checked{% endif %}> Populație<br>
+    <input type="radio" name="measure" value="suprafete" {% if measure == "suprafete" %}checked{% endif %}> Suprafață<br><br>
+
+    <label>Țări:</label><br>
+    {% for c in countries %}
+        <input type="checkbox" name="countries" value="{{ c }}" {% if c in tari %}checked{% endif %}> {{ c }}<br>
+    {% endfor %}
+
+    <br><input type="submit" value="Generează grafic">
+</form>
+
+{% if base64_image %}
+    <h3>Grafic generat:</h3>
+    <img src="data:image/png;base64,{{ base64_image }}" alt="Grafic">
+{% endif %}
