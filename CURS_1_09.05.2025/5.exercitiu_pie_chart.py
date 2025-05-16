@@ -13,8 +13,9 @@ with open("tari.csv") as freader:
 
 print("Countries", countries)
 print("Population", population)
-plt.title("Populatia celor mai mari 10 tari")
-plt.pie(population, labels=countries);
-plt.savefig("10_tari.png")
+plt.pie(population, labels=countries)
+plt.title("Populația celor mai mari 10 țări")
+plt.savefig("10_tari.png", bbox_inches='tight', dpi=100)  # Salvează ÎNAINTE de show()
+plt.show()
 
 

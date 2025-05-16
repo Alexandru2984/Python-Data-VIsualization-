@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>all_countries</title>
+</head>
+<body>
+    <h1>all_countries</h1>
+    <img src="{% static '10_tari.png' %}" alt="Top 10 țări">
+    {% for country in countries %}
+        <div>
+            <input type="checkbox" name="country" id="country_{{ forloop.counter }}" checked>
+            <label for="country_{{ forloop.counter }}">{{ country }}</label>
+        </div>
+    {% endfor %}
+</body>
+</html>
