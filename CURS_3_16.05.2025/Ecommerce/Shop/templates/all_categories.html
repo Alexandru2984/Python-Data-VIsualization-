@@ -10,7 +10,7 @@
     <ol>
         {% for cat in categories  %}
             <li>
-                {{cat.name}}
+                <a href="categories/{{cat.slug}}">{{cat.name}}</a>
             </li>
         {% endfor %}
     

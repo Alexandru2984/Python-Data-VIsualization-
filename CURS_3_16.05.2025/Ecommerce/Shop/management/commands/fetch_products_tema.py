@@ -9,6 +9,8 @@ from django.core.files.base import ContentFile
 from Shop.models import Product, Category 
 import requests
 import json
+import time
+import random
 
 
 class Command(BaseCommand):
@@ -18,14 +20,21 @@ class Command(BaseCommand):
 
         BASE_URL = 'https://dummyjson.com/'
         URL_PRODUCTS = BASE_URL + 'products'
-        LIMIT = 1
-        response = requests.get(URL_PRODUCTS, params={'limit':LIMIT})
+        LIMIT = 0
+        SKIP = 50
+        response = requests.get(URL_PRODUCTS, params={'limit':LIMIT, 'skip':SKIP})
         product_list = response.json()['products']
         for prod_dict in product_list:
             name = prod_dict['title']
             slug = name.lower().replace(" ", "-")
             description = prod_dict['description']
             price = prod_dict['price']
+
+
+            if Product.objects.filter(name=name, slug=slug, description=description):
+                print("Produsul deja exista in baza de date...!!!")
+                continue
+
 
             image_url = prod_dict['thumbnail']
             image_response = requests.get(image_url)
@@ -39,4 +48,5 @@ class Command(BaseCommand):
             
             product.image.save(name, ContentFile(image_content))
             product.save()
+            time.sleep(random.randint(1,3))
         print("Programul a rulat complet")
