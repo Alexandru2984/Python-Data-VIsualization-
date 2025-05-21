@@ -5,8 +5,7 @@
 # Luati 10 produse si le puneti in database
 
 from django.core.management.base import BaseCommand, CommandError
-from django.core.files.base import ContentFile
-from Shop.models import Product, Category 
+from Shop.models import Product 
 import requests
 import json
 
@@ -22,21 +21,10 @@ class Command(BaseCommand):
         response = requests.get(URL_PRODUCTS, params={'limit':LIMIT})
         product_list = response.json()['products']
         for prod_dict in product_list:
-            name = prod_dict['title']
-            slug = name.lower().replace(" ", "-")
+            name = prod_dict['name']
+            slug = name.lower().replace("", "_")
             description = prod_dict['description']
             price = prod_dict['price']
 
-            image_url = prod_dict['thumbnail']
-            image_response = requests.get(image_url)
-            image_content = image_response.content
-            category_name = prod_dict['category']
-            category_object = Category.objects.filter(name=category_name.title()).first()
-            product = Product.objects.create(name=name, slug=slug, description=description, price=price)
-            if category_object:
-                product.category = category_object
-
-            
-            product.image.save(name, ContentFile(image_content))
-            product.save()
+            Product.objects.create(name=name, slug=slug, description=description, price=price)
         print("Programul a rulat complet")
